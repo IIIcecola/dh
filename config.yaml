@@ -1,0 +1,57 @@
+
+device: "cuda"
+
+wav2vec2:
+  path: "./wav2vec2-base-960h"
+
+dataset:
+  cache_path: "./cache"
+  module_mapping:
+    general_module:
+      path: "./cache/general"       # 模块1缓存路径
+      sample_num: 100               # 模块1总样本数
+    high_priority_module:
+      path: "./cache/high_priority" # 模块2缓存路径
+      sample_num: 30                # 模块2总样本数
+  # 采样权重（控制各模块样本被选中的概率）
+  module_sample_weight:
+    general_module: 0.3
+    high_priority_module: 0.7
+  # loss权重（控制各模块loss对总损失的贡献）
+  module_loss_weight:
+    general_module: 0.2
+    high_priority_module: 1.0
+  seconds: 5
+  load_flag: True
+  shuffle: True
+  batch_size: 512
+  num_workers: 0
+  pin_memory: False
+  use_processor: False
+  datasets_list:
+    - ''
+    - ''
+
+model:
+  input_dim: 768
+  output_dim: 136
+  num_layers: 6
+  num_heads: 8
+  ff_dim: 2048
+  dropout: 0.1
+
+optimizer:
+  lr: 1e-4
+  weight_deay: 1e-4
+
+scheduler:
+  warmup_ratio: 0.1
+  min_lr: 1e-6
+
+training:
+  epoches: 1
+
+save_path: "./Weights/transformer_decoder.pth"
+  
+
+
